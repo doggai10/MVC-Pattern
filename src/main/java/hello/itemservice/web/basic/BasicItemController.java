@@ -14,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/basic/items")
+@RequestMapping("/form/items")
 @RequiredArgsConstructor
 public class BasicItemController {
 
@@ -24,95 +24,52 @@ public class BasicItemController {
     public String items(Model model){
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
-        return "basic/items";
+        return "form/items";
     }
-
 
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model){
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "basic/item";
+        return "form/item";
     }
 
     @PostMapping("/{itemId}")
     public String delete(@PathVariable long itemId, RedirectAttributes redirectAttributes){
         if(itemRepository.delete(itemId)){
             redirectAttributes.addAttribute("status", true);
-            return "redirect:/basic/items";
+            return "redirect:/form/items";
         }else{
-            return "basic/item/{itemId}";
+            return "form/item/{itemId}";
         }
     }
 
-
     @GetMapping("/add")
-    public String addForm(){
-        return "basic/addForm";
-    }
-
-//    @PostMapping("/add")
-    public String addItemV1(@RequestParam String itemName,
-                       @RequestParam int price,
-                       @RequestParam Integer quantity,
-                       Model model){
-        Item item = new Item(itemName,price,quantity);
-        itemRepository.save(item);
-        model.addAttribute("item", item);
-
-        return "basic/item";
-    }
-
-//    @PostMapping("/add")
-    public String addItemV2(@ModelAttribute("item") Item item){
-        itemRepository.save(item);
-
-        return "basic/item";
-    }
-
-
-//    @PostMapping("/add")
-    public String addItemV3(@ModelAttribute Item item){
-        itemRepository.save(item);
-
-        return "basic/item";
-    }
-
-    //@PostMapping("/add")
-    public String addItemV4(Item item){
-        itemRepository.save(item);
-
-        return "basic/item";
-    }
-
-//    @PostMapping("/add")
-    public String addItemV5(Item item){
-        itemRepository.save(item);
-
-        return "redirect:/basic/items/"+item.getId();
+    public String addForm(Model model){
+        model.addAttribute("item", new Item());
+        return "form/addForm";
     }
 
     @PostMapping("/add")
-    public String addItemV6(Item item, RedirectAttributes redirectAttributes){
+    public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes){
+        log.info("item.open={}", item.getOpen());
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/basic/items/{itemId}";
+        return "redirect:/form/items/{itemId}";
     }
 
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable long itemId, Model model){
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "basic/editForm";
+        return "form/editForm";
     }
-
-
 
     @PostMapping("/{itemId}/edit")
     public String editItem(@PathVariable long itemId, @ModelAttribute Item item){
         itemRepository.update(itemId, item);
-        return "redirect:/basic/items/{itemId}";
+        return "redirect:/form/items/{itemId}";
     }
 
     /**

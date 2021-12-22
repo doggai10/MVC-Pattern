@@ -18,14 +18,16 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
-@RequestMapping("/form2/items")
+@RequestMapping("/form3/items")
 @RequiredArgsConstructor
-public class FormItemControllerV2 {
+public class FormItemControllerV3 {
 
     private final ItemRepository itemRepository;
     private final FormValidator formValidator;
@@ -63,30 +65,30 @@ public class FormItemControllerV2 {
     public String items(Model model){
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
-        return "form2/items";
+        return "form3/items";
     }
 
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model){
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "form2/item";
+        return "form3/item";
     }
 
     @PostMapping("/{itemId}")
     public String delete(@PathVariable long itemId, RedirectAttributes redirectAttributes){
         if(itemRepository.delete(itemId)){
             redirectAttributes.addAttribute("status", true);
-            return "redirect:/form2/items";
+            return "redirect:/form3/items";
         }else{
-            return "form2/item/{itemId}";
+            return "form3/item/{itemId}";
         }
     }
 
     @GetMapping("/add")
     public String addForm(Model model){
         model.addAttribute("item", new Item());
-        return "form2/addForm";
+        return "form3/addForm";
     }
 
     // @PostMapping("/add")
@@ -113,14 +115,14 @@ public class FormItemControllerV2 {
         //검증에 실패하면 다시 입력 폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {} ", bindingResult);
-            return "form2/addForm";
+            return "form3/addForm";
         }
 
         // 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/form2/items/{itemId}";
+        return "redirect:/form3/items/{itemId}";
     }
 
     // @PostMapping("/add")
@@ -147,14 +149,14 @@ public class FormItemControllerV2 {
         //검증에 실패하면 다시 입력 폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {} ", bindingResult);
-            return "form2/addForm";
+            return "form3/addForm";
         }
 
         // 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/form2/items/{itemId}";
+        return "redirect:/form3/items/{itemId}";
     }
 
     //@PostMapping("/add")
@@ -181,14 +183,14 @@ public class FormItemControllerV2 {
         //검증에 실패하면 다시 입력 폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {} ", bindingResult);
-            return "form2/addForm";
+            return "form3/addForm";
         }
 
         // 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/form2/items/{itemId}";
+        return "redirect:/form3/items/{itemId}";
     }
 
     //@PostMapping("/add")
@@ -200,7 +202,7 @@ public class FormItemControllerV2 {
         //검증에 실패하면 다시 입력 폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {} ", bindingResult);
-            return "form2/addForm";
+            return "form3/addForm";
         }
 
         if(!StringUtils.hasText(item.getItemName())){
@@ -225,14 +227,14 @@ public class FormItemControllerV2 {
         //검증에 실패하면 다시 입력 폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {} ", bindingResult);
-            return "form2/addForm";
+            return "form3/addForm";
         }
 
         // 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/form2/items/{itemId}";
+        return "redirect:/form3/items/{itemId}";
     }
 
     //@PostMapping("/add")
@@ -243,14 +245,14 @@ public class FormItemControllerV2 {
         //검증에 실패하면 다시 입력 폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {} ", bindingResult);
-            return "form2/addForm";
+            return "form3/addForm";
         }
 
         // 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/form2/items/{itemId}";
+        return "redirect:/form3/items/{itemId}";
 
     }
 
@@ -260,14 +262,14 @@ public class FormItemControllerV2 {
         //검증에 실패하면 다시 입력 폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {} ", bindingResult);
-            return "form2/addForm";
+            return "form3/addForm";
         }
 
         // 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/form2/items/{itemId}";
+        return "redirect:/form3/items/{itemId}";
 
     }
 
@@ -277,13 +279,13 @@ public class FormItemControllerV2 {
     public String editForm(@PathVariable long itemId, Model model){
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "form2/editForm";
+        return "form3/editForm";
     }
 
     @PostMapping("/{itemId}/edit")
     public String editItem(@PathVariable long itemId, @ModelAttribute Item item){
         itemRepository.update(itemId, item);
-        return "redirect:/form2/items/{itemId}";
+        return "redirect:/form3/items/{itemId}";
     }
 
 }

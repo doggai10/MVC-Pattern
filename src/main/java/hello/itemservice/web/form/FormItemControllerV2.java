@@ -12,6 +12,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,6 +28,13 @@ import java.util.*;
 public class FormItemControllerV2 {
 
     private final ItemRepository itemRepository;
+    private final FormValidator formValidator;
+
+    @InitBinder
+    public void init(WebDataBinder dataBinder){
+        dataBinder.addValidators(formValidator);
+    }
+
 
     @ModelAttribute("regions")
     public Map<String, String> regions(){
@@ -151,7 +161,7 @@ public class FormItemControllerV2 {
     public String addItemV3(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
         //검증 로직
         if(!StringUtils.hasText(item.getItemName())){
-            bindingResult.addError(new FieldError("item", "itemName", item.getItemName(),false, new String[]{"required,item.itemName"}, null,null));
+            bindingResult.addError(new FieldError("item", "itemName", item.getItemName(),false, new String[]{"required.item.itemName"}, null,null));
         }
         if(item.getPrice() == null || item.getPrice()<1000 || item.getPrice()>1000000){
             bindingResult.addError(new FieldError("item", "price",item.getPrice(),false, new String[]{"range.item.price"},new Object[]{1000,1000000},null));
@@ -181,11 +191,21 @@ public class FormItemControllerV2 {
         return "redirect:/form2/items/{itemId}";
     }
 
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+
         //검증 로직
+        ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult, "itemName","required");
+
+        //검증에 실패하면 다시 입력 폼으로
+        if(bindingResult.hasErrors()){
+            log.info("errors = {} ", bindingResult);
+            return "form2/addForm";
+        }
+
         if(!StringUtils.hasText(item.getItemName())){
             bindingResult.rejectValue("itemName","required");
+
         }
         if(item.getPrice() == null || item.getPrice()<1000 || item.getPrice()>1000000){
             bindingResult.rejectValue("price", "range", new Object[]{1000,10000000}, null);
@@ -215,6 +235,56 @@ public class FormItemControllerV2 {
         return "redirect:/form2/items/{itemId}";
     }
 
+    //@PostMapping("/add")
+    public String addItemV5(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+        formValidator.validate(item, bindingResult);
+
+        //검증에 실패하면 다시 입력 폼으로
+        if(bindingResult.hasErrors()){
+            log.info("errors = {} ", bindingResult);
+            return "form2/addForm";
+        }
+
+        //검증에 실패하면 다시 입력 폼으로
+        if(bindingResult.hasErrors()){
+            log.info("errors = {} ", bindingResult);
+            return "form2/addForm";
+        }
+
+        // 성공 로직
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/form2/items/{itemId}";
+
+    }
+
+    @PostMapping("/add")
+    public String addItemV6(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+        //검증에 실패하면 다시 입력 폼으로
+        if(bindingResult.hasErrors()){
+            log.info("errors = {} ", bindingResult);
+            return "form2/addForm";
+        }
+
+        //검증에 실패하면 다시 입력 폼으로
+        if(bindingResult.hasErrors()){
+            log.info("errors = {} ", bindingResult);
+            return "form2/addForm";
+        }
+
+        // 성공 로직
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/form2/items/{itemId}";
+
+    }
+
+
+
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable long itemId, Model model){
         Item item = itemRepository.findById(itemId);
@@ -228,12 +298,4 @@ public class FormItemControllerV2 {
         return "redirect:/form2/items/{itemId}";
     }
 
-    /**
-     * 테스트용 데이터 추가
-     */
-    @PostConstruct
-    public void init(){
-        itemRepository.save(new Item("itemA",10000,10));
-        itemRepository.save(new Item("itemB",20000,20));
-    }
 }

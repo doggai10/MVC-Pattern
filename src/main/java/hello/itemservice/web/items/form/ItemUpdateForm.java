@@ -1,10 +1,9 @@
-package hello.itemservice.web.validation.form;
+package hello.itemservice.web.items.form;
 
 import hello.itemservice.domain.item.ItemType;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;

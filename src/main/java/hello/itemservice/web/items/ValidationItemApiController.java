@@ -1,6 +1,6 @@
-package hello.itemservice.web.validation;
+package hello.itemservice.web.items;
 
-import hello.itemservice.web.validation.form.ItemSaveForm;
+import hello.itemservice.web.items.form.ItemSaveForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;

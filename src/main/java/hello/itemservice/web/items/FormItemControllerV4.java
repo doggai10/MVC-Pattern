@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-@RequestMapping("/form4/items")
+@RequestMapping("/goods/items")
 @RequiredArgsConstructor
 public class FormItemControllerV4 {
 
@@ -51,30 +51,30 @@ public class FormItemControllerV4 {
     public String items(Model model){
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
-        return "form4/items";
+        return "goods/items";
     }
 
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model){
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "form4/item";
+        return "goods/item";
     }
 
     @PostMapping("/{itemId}")
     public String delete(@PathVariable long itemId, RedirectAttributes redirectAttributes){
         if(itemRepository.delete(itemId)){
             redirectAttributes.addAttribute("status", true);
-            return "redirect:/form4/items";
+            return "redirect:/goods/items";
         }else{
-            return "form4/item/{itemId}";
+            return "goods/items/{itemId}";
         }
     }
 
     @GetMapping("/add")
     public String addForm(Model model){
         model.addAttribute("item", new Item());
-        return "form4/addForm";
+        return "goods/addForm";
     }
 
 
@@ -93,7 +93,7 @@ public class FormItemControllerV4 {
         //검증에 실패하면 다시 입력 폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {} ", bindingResult);
-            return "form4/addForm";
+            return "goods/addForm";
         }
 
         // 성공 로직
@@ -101,7 +101,7 @@ public class FormItemControllerV4 {
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/form4/items/{itemId}";
+        return "redirect:/goods/items/{itemId}";
 
     }
 
@@ -110,7 +110,7 @@ public class FormItemControllerV4 {
     public String editForm(@PathVariable long itemId, Model model){
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "form4/editForm";
+        return "goods/editForm";
     }
 
     @PostMapping("/{itemId}/edit")
@@ -127,12 +127,12 @@ public class FormItemControllerV4 {
         //검증에 실패하면 다시 입력 폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {} ", bindingResult);
-            return "form4/editForm";
+            return "goods/editForm";
         }
 
         Item item = new Item(form.getItemName(), form.getPrice(), form.getQuantity());
         itemRepository.update(itemId, item);
-        return "redirect:/form4/items/{itemId}";
+        return "redirect:/goods/items/{itemId}";
     }
 
 }

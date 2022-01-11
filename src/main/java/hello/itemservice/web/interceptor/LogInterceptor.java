@@ -25,7 +25,7 @@ public class LogInterceptor implements HandlerInterceptor {
             HandlerMethod hm = (HandlerMethod) handler; //호출할 컨트롤러 메서드의 모든 정보가 포함되어 있다.
         }
 
-        log.info("REQUEST [{}][{}][{}]",uuid,requestURI,handler);
+        log.info("REQUEST [{}][{}][{}][{}]",uuid,request.getDispatcherType(),requestURI,handler);
         return true;
     }
 

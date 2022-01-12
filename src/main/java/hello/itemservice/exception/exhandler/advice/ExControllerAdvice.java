@@ -1,7 +1,7 @@
-package hello.itemservice.web.exception.exhandler.advice;
+package hello.itemservice.exception.exhandler.advice;
 
-import hello.itemservice.web.exception.UserException;
-import hello.itemservice.web.exception.exhandler.ErrorResult;
+import hello.itemservice.exception.UserException;
+import hello.itemservice.exception.exhandler.ErrorResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

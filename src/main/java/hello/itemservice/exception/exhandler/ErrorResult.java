@@ -1,4 +1,4 @@
-package hello.itemservice.web.exception.exhandler;
+package hello.itemservice.exception.exhandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

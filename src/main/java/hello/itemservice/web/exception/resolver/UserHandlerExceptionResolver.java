@@ -1,7 +1,7 @@
 package hello.itemservice.web.exception.resolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hello.itemservice.web.exception.exception.UserException;
+import hello.itemservice.web.exception.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;

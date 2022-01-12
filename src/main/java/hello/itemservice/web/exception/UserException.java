@@ -1,4 +1,4 @@
-package hello.itemservice.web.exception.exception;
+package hello.itemservice.web.exception;
 
 public class UserException extends RuntimeException {
 

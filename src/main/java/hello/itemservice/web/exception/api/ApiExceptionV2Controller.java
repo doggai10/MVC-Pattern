@@ -11,11 +11,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
-public class ApiExceptionController {
+@RequestMapping("api2/")
+public class ApiExceptionV2Controller {
 
     @GetMapping("/members/{id}")
-    public MemberDto getMember(@PathVariable("id") String id){
+    public ApiExceptionController.MemberDto getMember(@PathVariable("id") String id){
         if(id.equals("ex")){
             throw new RuntimeException("잘못된 사용자");
         }
@@ -26,7 +26,7 @@ public class ApiExceptionController {
         if(id.equals("user-ex")){
             throw new UserException("사용자 오류");
         }
-        return new MemberDto(id, "hello "+id);
+        return new ApiExceptionController.MemberDto(id, "hello "+id);
     }
 
     @GetMapping("/response-status-ex1")
@@ -50,4 +50,5 @@ public class ApiExceptionController {
         private String memberId;
         private String name;
     }
+
 }

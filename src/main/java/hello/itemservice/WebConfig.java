@@ -27,23 +27,23 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-//    @Override
-//    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-//        resolvers.add(new LoginMemberArgumentsResolver());
-//    }
-//
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new LogInterceptor())
-//                .order(1)
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/css/**", "/*.ico","/error","/error-page/**");
-//
-//        registry.addInterceptor(new LoginCheckInterceptor())
-//                .order(2)
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/", "/members/add", "/login", "/logout", "/css**", "/*.ico", "/error");
-//    }
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new LoginMemberArgumentsResolver());
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LogInterceptor())
+                .order(1)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/css/**", "/*.ico","/error","/error-page/**");
+
+        registry.addInterceptor(new LoginCheckInterceptor())
+                .order(2)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/", "/members/add", "/login", "/logout", "/css**", "/*.ico", "/error");
+    }
 
 
     @Override

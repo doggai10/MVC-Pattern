@@ -22,12 +22,12 @@ public class FormatterController {
         form.setNumber(10000);
         form.setLocalDateTime(LocalDateTime.now());
         model.addAttribute("form", form);
-        return "formatter-form";
+        return "formatter/formatter-form";
     }
 
     @PostMapping("/formatter/edit")
     public String formatterEdit(@ModelAttribute Form form){
-        return "formatter-view";
+        return "formatter/formatter-view";
     }
 
     @Data
